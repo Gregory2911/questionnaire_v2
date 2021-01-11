@@ -1,0 +1,169 @@
+html
+{
+	position: relative;
+	min-height: 100%;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#headerAccueil
+{
+	border-bottom: 5px #8F8F8F solid;
+	color: #8F8F8F;
+	padding-bottom: 10px;
+	text-align: center;
+}
+
+section
+{
+	margin-top: 50px;
+	margin-bottom: 200px;
+}
+
+h1
+{
+	margin: auto;
+}
+
+legend, label
+{
+	margin-bottom: 10px;
+	font-size: 20px;
+}
+
+small
+{
+	margin-bottom: 10px;
+}
+
+.form-group
+{
+	margin-bottom: 25px;
+}
+
+.element
+{
+	/* border-bottom: 1px #8F8F8F solid; */
+	margin-bottom: 25px;
+	padding-bottom: 25px;
+}
+
+.blocTexte
+{
+	margin-bottom: 25px;
+	/* border: 1px #8F8F8F solid; */
+	font-size: 20px;
+	/* vertical-align: middle; */
+}
+
+textarea
+{
+	height: 200px !important;
+}
+
+.btn
+{
+	font-size: 20px;
+	border: 1px #8F8F8F solid !important;
+	margin-right: 10px;
+	border-radius: 0%;	
+	background-color: white;
+	color: #8F8F8F;
+}
+
+.btn:hover
+{
+	color: #fdd400;
+}
+
+.invalid-feedback
+{
+	margin-left: 20px;
+}
+
+/* footer
+{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 30px;
+	
+ 	background-color: #8F8F8F;
+ 	color: white;
+ 	text-align: center;
+} */
+.footer
+{
+	background-color: #8F8F8F;
+}
+
+footer
+{
+	color: white;
+}
+
+.modal-header, .modal-body
+{
+	background-color: #789696;
+}
+
+.modal-header
+{
+	border: none;
+}
+
+.modal-title
+{
+	color: white;
+}
+
+#btnSubmit
+{
+	margin-top: 30px;
+}
+
+#btnSubmit, #btnConfirmation
+{
+	background-color: #39B54A;
+	color: white;
+	font-size: 13px;
+	font-weight: bold;
+	width: 120px;
+	height: 40px;
+	border: white 1px solid !important;
+}
+
+#btnSubmit:hover, #btnConfirmation:hover
+{
+	opacity: 70%;
+	font-size: 12px;
+	border: #D8DCCE 1px solid !important;
+}
+
+#btnAnnulation
+{
+	background-color: #789696;
+	color: white;
+	font-size: 13px;
+	font-weight: bold;
+	width: 120px;
+	height: 40px;
+	border: white 1px solid !important;
+	opacity: 100%;
+}
+
+#btnAnnulation:hover
+{
+	opacity: 70%;
+	font-size: 12px;
+	border: #D8DCCE 1px solid !important;
+}
+
+#infoAsterisque
+{
+	color: #E2574C;
+}
+
+/* .done
+{
+	border: 1px lime solid;
+} */
