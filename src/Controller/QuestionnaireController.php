@@ -39,7 +39,7 @@ class QuestionnaireController extends AbstractController
             
             // dump($Serveur_Formdev);
             // die();
-            $json = @file_get_contents('http://'.$Serveur_Formdev.'/questionnaire/' . $id);
+            $json = @file_get_contents($Serveur_Formdev.'/questionnaire/' . $id);
             
             if($json !== false)
             {
@@ -221,13 +221,10 @@ class QuestionnaireController extends AbstractController
             
             $context = stream_context_create($options);
             
-            $result = file_get_contents('http://'.$Serveur_Formdev .'/questionnaire/'. $id, false, $context);
-            
+            $result = file_get_contents($Serveur_Formdev .'/questionnaire/'. $id, false, $context);
+                        
             $reponseJson = json_decode($result, true);
-
-            // dump($reponseJson);
-            // die();
-            
+           
             if($reponseJson['ok'] !== false)
             {
                 $reponseSubmit = "Votre questionnaire a bien été envoyé. Merci pour votre réponse.";
