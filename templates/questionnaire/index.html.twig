@@ -40,13 +40,13 @@
 
             {# bloc texte #}
             {% if (question.typeQuestion == 8) %}
-                <div class="blocTexte">{{ question.libelle }}</div>
+                <div class="blocTexte libelleQuestion">{{ question.libelle }}</div>
             {% endif %}
             
             {# texte court #}
             {% if (question.typeQuestion == 1) %}
                 <div class="element form-group">								
-                    <label for="{{ id }}">{{ nb ~ ". " ~ question.libelle ~ asterisque }}</label>									
+                    <label for="{{ id }}" class="libelleQuestion">{{ nb ~ ". " ~ question.libelle}} <span class="asterisque">{{ asterisque }}</span></label>
                     {{ aide | raw }}
                     <input id="{{ id }}" name="{{ id }}[]" type="text" class="form-control" aria-describedby="passwordHelpBlock" {{ require }}>                    
                     <div class="invalid-feedback">
@@ -58,7 +58,7 @@
             {# texte long #}
             {% if (question.typeQuestion == 2) %}
                 <div class="form-group element">
-                    <label for="{{ id }}">{{ nb ~ ". " ~ question.libelle ~ asterisque }}</label>													
+                    <label for="{{ id }}" class="libelleQuestion">{{ nb ~ ". " ~ question.libelle}} <span class="asterisque">{{ asterisque }}</span></label>													
                     {{ aide | raw }}
                     <textarea id="{{ id }}" name="{{ id }}[]" type="textarea" class="form-control" {{ require }}></textarea>								                    
                     <div class="invalid-feedback">
@@ -70,7 +70,7 @@
             {# choix unique #}
             {% if (question.typeQuestion == 3) %}
                 <div class="form-group element">                    
-                    <legend>{{ nb ~ ". " ~ question.libelle ~ asterisque }}</legend>		                
+                    <legend class="libelleQuestion">{{ nb ~ ". " ~ question.libelle}} <span class="asterisque">{{ asterisque }}</span></legend>		                
                     {{ aide | raw }}                  
                         <div class="row">                            
                             {% for value in question.choix %}		                                                                
@@ -92,7 +92,7 @@
             {# choix multiple #}
             {% if (question.typeQuestion == 4) %}
                 <div class="form-group element {{ classChoixMultiple }}">
-                    <legend>{{ nb ~ ". " ~ question.libelle ~ asterisque }}</legend> 
+                    <legend class="libelleQuestion">{{ nb ~ ". " ~ question.libelle}} <span class="asterisque">{{ asterisque }}</span></legend> 
                     {{ aide | raw }}
                     <div class="row">                                              
                         {% for value in question.choix %}      
@@ -116,7 +116,7 @@
             {# liste déroulante #}
             {% if (question.typeQuestion == 5) %}
                 <div class="element">
-                    <legend>{{ nb ~ ". " ~ question.libelle ~ asterisque }}</legend>
+                    <legend class="libelleQuestion">{{ nb ~ ". " ~ question.libelle}} <span class="asterisque">{{ asterisque }}</span></legend>
                     {{ aide | raw }}
                     <div class="form-group">					
                         <select class="custom-select" name="{{ id }}[]" {{ require }}>
@@ -133,7 +133,7 @@
             {# notation #}
             {% if (question.typeQuestion == 6) %}
                 <div class="form-group element">
-                    <legend>{{ nb ~ ". " ~ question.libelle ~ asterisque }}</legend>                                            
+                    <legend class="libelleQuestion">{{ nb ~ ". " ~ question.libelle}} <span class="asterisque">{{ asterisque }}</span></legend>                                            
                     {{ aide | raw }}
                     {% for j in question.borneInf..question.borneSup %}                            										                        
                         <div class="custom-control custom-radio custom-control-inline">						
@@ -150,7 +150,7 @@
             {# case à cocher #}            
             {% if (question.typeQuestion == 7) %}            
                 <div class="form-group element">
-                    <legend>{{ nb ~ ". " ~ question.libelle ~ asterisque }}</legend>
+                    <legend class="libelleQuestion">{{ nb ~ ". " ~ question.libelle}} <span class="asterisque">{{ asterisque }}</span></legend>
                     {{ aide | raw }}
                     <div class="custom-control custom-checkbox mb-3">
                         <input type="checkbox" class="custom-control-input" id="{{'customControlValidation' ~ id}}"  name="{{ id }}[]" {{ require }}>
@@ -172,7 +172,7 @@
                     {# <legend>Cochez cette case si vous souhaitez que vos réponses soient traitées de manière anonyme.</legend> #}
                     <div class="custom-control custom-checkbox mb-3">
                         <input type="checkbox" class="custom-control-input" id="anonyme"  name="anonyme">
-                        <label class="custom-control-label" for="anonyme">Cochez cette case si vous souhaitez que vos réponses soient traitées de manière anonyme.</label>                        
+                        <label class="custom-control-label libelleQuestion" for="anonyme">Cochez cette case si vous souhaitez que vos réponses soient traitées de manière anonyme.</label>                        
                     </div>                    
                 </div>
             {% endif %} 
