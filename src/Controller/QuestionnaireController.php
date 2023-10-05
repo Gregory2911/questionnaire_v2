@@ -20,98 +20,83 @@ class QuestionnaireController extends AbstractController
     /**
      * @Route("/{id}", name="questionnaire")
      */
-    public function index($id = null)
-    {
-        
-        if(isset($id))
-        {                        
-            // if (isset($test) && $test == '1')
-            // {
-            //     $Serveur_Formdev = 'webdevtest.form-dev.fr';
-            //     $serveurTest = 1;
-            // }
-            // else
-            // {
-            //     $Serveur_Formdev = $_SERVER['APP_SERV'];
-            //     $serveurTest = 0;
-            // }
+    public function index($id = null, Request $request)
+    {        
+        if (isset($id)) {
+            $isV2 = false;
             $Serveur_Formdev = $_SERVER['APP_SERV'];
-            
-            // dump($Serveur_Formdev);
-            // die();
-            $json = @file_get_contents($Serveur_Formdev.'/questionnaire/' . $id);
-            
-            if($json !== false)
-            {
-                $content = json_decode($json, true); 
-                
-                $infoQuestionnaire = extract($content['Questionnaire']);//crée les variables $question $nom $presentation $anonyme 
-
-                $questionnaire = new Questionnaire();
-
-                $questionnaire->setOk($content['ok'])
-                              ->setCle($id)
-                              ->setType($content['Type'])
-                              ->setRealise($content['Realise'])
-                              ->setNom($Nom)
-                              ->setPresentation($Presentation)
-                              ->setNomDestinataire($content['Nom'])
-                              ->setPrenomDestinataire($content['Prenom'])
-                              ->setAnonyme($Anonyme)
-                              ->setSociete($content['NomSociete']);;
-
-                $i = 0;
-                $tabQuestion = array();
-                foreach ($Question as $key => $value)
-                {
-                    $field = new Field();
-
-                    $field->setId($value['Id'])
-                          ->setLibelle($value['Libelle'])
-                          ->setTypeQuestion($value['TypeQuestion'])
-                          ->setAide($value['Aide'])
-                          ->setObligatoire($value['Obligatoire'])
-                          ->setBorneInf(intval($value['BorneInf']))
-                          ->setBorneSup(intval($value['BorneSup']));
-                          
-                    if(isset($value['Choix']))
-                    {
-                        $field->setChoix($value['Choix']);
-                    }
-                    
-                    $tabQuestion[$i] = $field;                   
-
-                    $i++;
-                }
-
-                $questionnaire->setField($tabQuestion);                            
-
-                if($questionnaire->getRealise() == false)
-                {
-                    return $this->render('questionnaire/index.html.twig', [                        
-                        'questionnaire' => $questionnaire,
-                        'servicename'   => $_SERVER['APP_NAME']
-                    ]);
-                }
-                else
-                {
-                    // throw new Exception('Le questionnaire a déjà été envoyé.');
-                    return $this->render('exception/error.html.twig',[
-                        'error' => 'Le questionnaire a déjà été envoyé.'
-                    ]);
-                }
-
+            $url = $Serveur_Formdev . '/questionnaire/' . $id;
+            if ($request->get('v2')) {
+                $Serveur_Formdev = $_SERVER['APP_SERV_V2'];
+                $url = $Serveur_Formdev . '/questionnaire/get-by-url/' . $id;
+                $isV2 = true;
             }
-            else
-            {
-                // throw new Exception('Récupération du questionnaire impossible.');
+            $json = @file_get_contents($url);
+            if($json !== false) {                
+                $content = json_decode($json, true); 
+                if ($content['ok'] !== false) {
+                    $infoQuestionnaire = extract($content['Questionnaire']);//crée les variables $question $nom $presentation $anonyme 
+                    $questionnaire = new Questionnaire();
+                    $questionnaire->setOk($content['ok'])
+                                ->setCle($id)
+                                ->setType($content['Type'])
+                                ->setRealise($content['Realise'])
+                                ->setNom($Nom)
+                                ->setPresentation($Presentation)
+                                ->setNomDestinataire($content['Nom'])
+                                ->setPrenomDestinataire($content['Prenom'])
+                                ->setAnonyme($Anonyme)
+                                ->setSociete($content['NomSociete']);;
+
+                    $i = 0;
+                    $tabQuestion = array();
+                    foreach ($Question as $key => $value) {
+                        $field = new Field();
+
+                        $field->setId($value['Id'])
+                            ->setLibelle($value['Libelle'])
+                            ->setTypeQuestion($value['TypeQuestion'])
+                            ->setAide($value['Aide'])
+                            ->setObligatoire($value['Obligatoire'])
+                            ->setBorneInf(intval($value['BorneInf']))
+                            ->setBorneSup(intval($value['BorneSup']));
+                            
+                        if(isset($value['Choix']))
+                        {
+                            $field->setChoix($value['Choix']);
+                        }
+                        
+                        $tabQuestion[$i] = $field;                   
+
+                        $i++;
+                    }
+
+                    $questionnaire->setField($tabQuestion);                            
+
+                    if ($questionnaire->getRealise() == false) {
+                        return $this->render('questionnaire/index.html.twig', [                        
+                            'questionnaire' => $questionnaire,
+                            'servicename'   => $_SERVER['APP_NAME'],
+                            'isV2' => $isV2
+                        ]);
+                    } else {
+                        // throw new Exception('Le questionnaire a déjà été envoyé.');
+                        return $this->render('exception/error.html.twig',[
+                            'error' => 'Le questionnaire a déjà été envoyé.'
+                        ]);
+                    }    
+                } else {
+                    return $this->render('exception/error.html.twig',[
+                        'error' => 'Récupération du questionnaire impossible.'
+                    ]);
+                }
+            }
+            else {
                 return $this->render('exception/error.html.twig',[
                     'error' => 'Récupération du questionnaire impossible.'
                 ]);
             }
-        }
-        else
-        {            
+        } else {   
             return $this->render('exception/error.html.twig',[
                 'error' => 'Identifiant inconnu.'
             ]);
@@ -240,6 +225,94 @@ class QuestionnaireController extends AbstractController
         }
         else
         {            
+            //throw new Exception('Identifiant inconnu.');
+            return $this->render('exception/error.html.twig',[
+                'error' => 'Identifiant inconnu.'
+            ]);
+        }
+    }
+
+    /**
+     * @Route("/submitQuestionnaireV2/{id}", name="submitQuestionnaireV2")
+     */
+    public function submitQuestionnaireV2($id = null, Request $request)
+    {   
+        $Serveur_Formdev = $_SERVER['APP_SERV_V2'];
+
+        if($id !== null) {
+            $idQuestionnaire = $id;
+            $isAnonyme = 0;
+            $i = 0;
+            $tabReponses = array();
+            foreach ($request->request->all() as $key => $value) {
+                $elt = explode("|",$key);
+                if ($elt[0] == 'id') {
+                    if (!empty($value)) {
+                        if ($elt[2] == "vrai" && $value[0] == "") {
+                            return $this->render('exception/error.html.twig',[
+                                'error' => 'Vous devez répondre à toutes les questions obligatoires.'
+                            ]);
+                        } else if($value[0] !== "") {                    
+                            $j =  0;
+                            $tabReponse = array();
+                            foreach ($value as $keyQuestion => $valueQuestion) {
+                                if($elt[3] == "long") {
+                                    $reponse = new ReponseLongue();                                
+                                    $reponse->setReponseLongue($valueQuestion);
+                                    $tabReponse[$j] = $reponse;
+                                } else {
+                                    $reponse = new Reponse();
+                                    $reponse->setReponse($valueQuestion);
+                                    $tabReponse[$j] = $reponse;
+                                }
+                                $j++;
+                            }
+                            $reponses = new Reponses();
+                            $reponses->setId(intval($elt[1]))
+                                    ->setReponses($tabReponse);
+
+                            $tabReponses[$i] = $reponses;
+                            
+                            $i++;
+                        }                        
+                    }
+                } else if($key == 'anonyme') {
+                    $isAnonyme = 1;
+                }
+            }
+            
+            $encoders = [new JsonEncoder()];
+            $normalizers = [new ObjectNormalizer()];
+
+            $serializer = new Serializer($normalizers, $encoders);
+                        
+            $json = '{"isAnonyme":' . $isAnonyme . ',"Reponse":' . $serializer->serialize($tabReponses, 'json') . '}';
+
+            $options = array(
+                'http' => array(
+                    'method' => 'POST',
+                    'header' => "Content-Type: application/json",
+                    'ignore_errors' => true,
+                    'content' => $json
+                )
+            );
+            
+            $context = stream_context_create($options);
+            
+            $result = file_get_contents($Serveur_Formdev .'/questionnaire/validation/'. $id, false, $context);
+                        
+            $reponseJson = json_decode($result, true);
+           
+            if ($reponseJson['ok'] !== false) {
+                $reponseSubmit = "Votre questionnaire a bien été envoyé. Merci pour votre réponse.";
+            } else {
+                $reponseSubmit = $reponseJson['Erreur'];
+            }
+
+            return $this->render('questionnaire/submitQuestionnaire.html.twig', [
+                'reponse' => $reponseSubmit
+            ]);
+        } else {            
             //throw new Exception('Identifiant inconnu.');
             return $this->render('exception/error.html.twig',[
                 'error' => 'Identifiant inconnu.'

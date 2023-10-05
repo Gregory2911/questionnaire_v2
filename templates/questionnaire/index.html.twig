@@ -7,8 +7,11 @@
         
         <p>{{ questionnaire.presentation | raw }}</p>
 
-	    <form action="{{ path('submitQuestionnaire', {'id':questionnaire.cle}) }}" method="post" class="col-lg-12 needs-validation" name="formulaire" novalidate>
-        
+        {% if (isV2 == false) %}
+	        <form action="{{ path('submitQuestionnaire', {'id':questionnaire.cle}) }}" method="post" class="col-lg-12 needs-validation" name="formulaire" novalidate>
+        {% else %}
+            <form action="{{ path('submitQuestionnaireV2', {'id':questionnaire.cle}) }}" method="post" class="col-lg-12 needs-validation" name="formulaire" novalidate>
+        {% endif %}
         {% set nb = 1 %}
         {% set i = 1 %}
 
