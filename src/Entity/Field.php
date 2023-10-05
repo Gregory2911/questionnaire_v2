@@ -80,7 +80,7 @@ class Field
         return $this->typeQuestion;
     }
 
-    public function setTypeQuestion(int $typeQuestion): self
+    public function setTypeQuestion(?int $typeQuestion): self
     {
         $this->typeQuestion = $typeQuestion;
 
@@ -104,7 +104,7 @@ class Field
         return $this->obligatoire;
     }
 
-    public function setObligatoire(bool $obligatoire): self
+    public function setObligatoire(?bool $obligatoire): self
     {
         $this->obligatoire = $obligatoire;
 
