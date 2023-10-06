@@ -31,7 +31,7 @@ class ReponseLongue
         return $this->ReponseLongue;
     }
 
-    public function setReponseLongue(string $reponse): self
+    public function setReponseLongue(?string $reponse): self
     {
         $this->ReponseLongue = $reponse;
 

@@ -26,7 +26,7 @@ class Reponses
         return $this->Id;
     }
 
-    public function setId(int $id): self
+    public function setId(?int $id): self
     {
         $this->Id = $id;
 
@@ -38,7 +38,7 @@ class Reponses
         return $this->Reponses;
     }
 
-    public function setReponses(array $reponses): self
+    public function setReponses(?array $reponses): self
     {
         $this->Reponses = $reponses;
 

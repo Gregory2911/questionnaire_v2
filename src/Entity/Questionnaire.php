@@ -83,7 +83,7 @@ class Questionnaire
         return $this->cle;
     }
 
-    public function setCle(string $cle): self
+    public function setCle(?string $cle): self
     {
         $this->cle = $cle;
 
@@ -95,7 +95,7 @@ class Questionnaire
         return $this->ok;
     }
 
-    public function setOk(bool $ok): self
+    public function setOk(?bool $ok): self
     {
         $this->ok = $ok;
 
@@ -107,7 +107,7 @@ class Questionnaire
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(?string $type): self
     {
         $this->type = $type;
 
@@ -119,7 +119,7 @@ class Questionnaire
         return $this->realise;
     }
 
-    public function setRealise(bool $realise): self
+    public function setRealise(?bool $realise): self
     {
         $this->realise = $realise;
 
@@ -131,7 +131,7 @@ class Questionnaire
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
 
@@ -143,7 +143,7 @@ class Questionnaire
         return $this->presentation;
     }
 
-    public function setPresentation(string $presentation): self
+    public function setPresentation(?string $presentation): self
     {
         $this->presentation = $presentation;
 
@@ -155,7 +155,7 @@ class Questionnaire
         return $this->nomDestinataire;
     }
 
-    public function setNomDestinataire(string $nomDestinataire): self
+    public function setNomDestinataire(?string $nomDestinataire): self
     {
         $this->nomDestinataire = $nomDestinataire;
 
@@ -167,7 +167,7 @@ class Questionnaire
         return $this->prenomDestinataire;
     }
 
-    public function setPrenomDestinataire(string $prenomDestinataire): self
+    public function setPrenomDestinataire(?string $prenomDestinataire): self
     {
         $this->prenomDestinataire = $prenomDestinataire;
 
@@ -179,7 +179,7 @@ class Questionnaire
         return $this->societe;
     }
 
-    public function setSociete(string $societe): self
+    public function setSociete(?string $societe): self
     {
         $this->societe = $societe;
 
@@ -191,7 +191,7 @@ class Questionnaire
         return $this->anonyme;
     }
 
-    public function setAnonyme(bool $anonyme): self
+    public function setAnonyme(?bool $anonyme): self
     {
         $this->anonyme = $anonyme;
 
@@ -203,7 +203,7 @@ class Questionnaire
         return $this->field;
     }
 
-    public function setField(array $field): self
+    public function setField(?array $field): self
     {
         $this->field = $field;
 

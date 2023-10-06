@@ -31,7 +31,7 @@ class Reponse
         return $this->Reponse;
     }
 
-    public function setReponse(string $reponse): self
+    public function setReponse(?string $reponse): self
     {
         $this->Reponse = $reponse;
 
