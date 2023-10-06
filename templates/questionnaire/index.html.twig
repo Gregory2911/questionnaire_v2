@@ -6,7 +6,7 @@
     <section class="container-lg">
         
         <p>{{ questionnaire.presentation | raw }}</p>
-        <p>{{ isV2 }}</p>
+        
         {% if (isV2 == false) %}
 	        <form action="{{ path('submitQuestionnaire', {'id':questionnaire.cle}) }}" method="post" class="col-lg-12 needs-validation" name="formulaire" novalidate>
         {% else %}
