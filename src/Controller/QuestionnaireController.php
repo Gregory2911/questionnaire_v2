@@ -108,79 +108,45 @@ class QuestionnaireController extends AbstractController
      */
     public function submitQuestionnaire($id = null, Request $request)
     {
-        // if (isset($test) && $test == '1')
-        // {
-        //     $Serveur_Formdev = 'webdevtest.form-dev.fr';
-        //     $serveurTest = 1;
-        // }
-        // else
-        // {
-        //     $Serveur_Formdev = $_SERVER['APP_SERV'];
-        //     $serveurTest = 0;
-        // }
-        
         $Serveur_Formdev = $_SERVER['APP_SERV'];
-
-        if($id !== null)
-        {
-            
-            $idQuestionnaire = $id;
-
+        if($id !== null) {
             $request = Request::createFromGlobals();
-
             $isAnonyme = 0;
-            
             $i = 0;
             $tabReponses = array();
-            foreach ($request->request->all() as $key => $value) //$value est un array
-            {
+            foreach ($request->request->all() as $key => $value) {
                 $elt = explode("|",$key);
                 
-                if($elt[0] == 'id')
-                {
-                    if (!empty($value))
-                    {
-                        if($elt[2] == "vrai" && $value[0] == "")
-                        {        
-                            // throw new Exception('Vous devez répondre à toutes les questions obligatoires.');                    
+                if($elt[0] == 'id') {
+                    if (!empty($value)) {
+                        if($elt[2] == "vrai" && $value[0] == "") {
                             return $this->render('exception/error.html.twig',[
                                 'error' => 'Vous devez répondre à toutes les questions obligatoires.'
                             ]);
-                        }
-                        elseif($value[0] !== "")
-                        {                    
+                        } elseif($value[0] !== "") {                    
                             $j =  0;
                             $tabReponse = array();
-                            foreach ($value as $keyQuestion => $valueQuestion) 
-                            {
-                                if($elt[3] == "long")
-                                {
+                            foreach ($value as $keyQuestion => $valueQuestion) {
+                                if($elt[3] == "long") {
                                     $reponse = new ReponseLongue();                                
                                     $reponse->setReponseLongue($valueQuestion);
                                     $tabReponse[$j] = $reponse;
-                                }
-                                else
-                                {
+                                } else {
                                     $reponse = new Reponse();
                                     $reponse->setReponse($valueQuestion);
                                     $tabReponse[$j] = $reponse;
-                                }                                
-                               
+                                }
                                 $j++;
                             }
-                            
                             $reponses = new Reponses();
                             $reponses->setId(intval($elt[1]))
                                     ->setReponses($tabReponse);
 
                             $tabReponses[$i] = $reponses;
-                            
                             $i++;
                         }                        
                     }
-                }
-                elseif($key == 'anonyme')
-                {                    
+                } elseif($key == 'anonyme') {
                     $isAnonyme = 1;
                 }         
             }
@@ -190,11 +156,7 @@ class QuestionnaireController extends AbstractController
 
             $serializer = new Serializer($normalizers, $encoders);
                         
-            $json = '{"isAnonyme":' . $isAnonyme . ',"Reponse":' . $serializer->serialize($tabReponses, 'json') . '}';                                   
-            // dump($tabReponses);     
-            // dump($json);
-            // die();
-
+            $json = '{"isAnonyme":' . $isAnonyme . ',"Reponse":' . $serializer->serialize($tabReponses, 'json') . '}';
             $options = array(
                 'http' => array(
                     'method' => 'POST',
@@ -210,21 +172,16 @@ class QuestionnaireController extends AbstractController
                         
             $reponseJson = json_decode($result, true);
            
-            if($reponseJson['ok'] !== false)
-            {
+            if($reponseJson['ok'] !== false) {
                 $reponseSubmit = "Votre questionnaire a bien été envoyé. Merci pour votre réponse.";
-            }
-            else
-            {
+            } else {
                 $reponseSubmit = $reponseJson['Erreur'];
             }
 
             return $this->render('questionnaire/submitQuestionnaire.html.twig', [
                 'reponse' => $reponseSubmit
             ]);
-        }
-        else
-        {            
+        } else {            
             //throw new Exception('Identifiant inconnu.');
             return $this->render('exception/error.html.twig',[
                 'error' => 'Identifiant inconnu.'
