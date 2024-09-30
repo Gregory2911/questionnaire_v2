@@ -28,7 +28,7 @@ class QuestionnaireController extends AbstractController
             $url = $Serveur_Formdev . '/questionnaire/' . $id;
             if ($request->get('v2')) {
                 $Serveur_Formdev = $_SERVER['APP_SERV_V2'];
-                $url = $Serveur_Formdev . '/questionnaire/get-by-url/' . $id;
+                $url = $Serveur_Formdev . '/api/erp/questionnaire/get-by-url/' . $id;
                 $isV2 = true;
             }
             $json = @file_get_contents($url);
@@ -256,7 +256,7 @@ class QuestionnaireController extends AbstractController
             
             $context = stream_context_create($options);
             
-            $result = file_get_contents($Serveur_Formdev .'/questionnaire/validation/'. $id, false, $context);
+            $result = file_get_contents($Serveur_Formdev . '/api/erp/questionnaire/validation/'. $id, false, $context);
                         
             $reponseJson = json_decode($result, true);
            
