@@ -3,18 +3,39 @@
 {% block title %}Hello QrCodeController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/admin/Documents/Formdev/Projets/questionnaire_v2/src/Controller/QrCodeController.php'|file_link(0) }}">src/Controller/QrCodeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/admin/Documents/Formdev/Projets/questionnaire_v2/templates/qr_code/index.html.twig'|file_link(0) }}">templates/qr_code/index.html.twig</a></code></li>
-    </ul>
+{# form with a picker with all the interns of a quesionary #}
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-auto">
+            <form action="{{ path('app_qr_code_questionary', {encryption: encryption}) }}" method="post">
+                <div class="form-group">
+                    <label for="intern">Qui êtes-vous :</label>
+                    {% if interns|length > 0 %}
+                        <select class="form-control" id="intern" name="internId" required>
+                            <option value="" disabled selected>Sélectionnez un stagiaire</option>
+                            {% for intern in interns %}
+                                <option value="{{ intern.id }}" data-intern="{{ intern|json_encode }}">{{ intern.name }}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <p>Aucun stagiaire disponible.</p>
+                    {% endif %}
+                </div>
+                <!-- Hidden input to store the selected intern as a JSON string -->
+                <input type="hidden" id="selectedInternData" name="selectedInternData" value="">
+                <button type="submit" class="btn btn-primary" {% if interns|length == 0 %}disabled{% endif %}>Remplir mon questionnaire</button>
+            </form>
+        </div>
+    </div>
 </div>
+
+<script>
+    document.getElementById('intern').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const internData = selectedOption.getAttribute('data-intern');
+        
+        // Set the hidden input's value to the selected intern's JSON data
+        document.getElementById('selectedInternData').value = internData;
+    });
+</script>
 {% endblock %}
