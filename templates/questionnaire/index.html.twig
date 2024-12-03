@@ -3,6 +3,16 @@
 {% block titleQuestionnaire %} {{ questionnaire.nom }} {% endblock %}
 
 {% block body %}
+    <header>
+        <div class="container-fluid" id="headerAccueil">		  		
+            <div class="row">                    
+                <div class="col-lg-12">
+                    <h1>{% block titleQuestionnaire %}{% endblock %}</h1>                        
+                </div>
+            </div>
+        </div>
+    </header>
+
     <section class="container-lg">
         
         <p>{{ questionnaire.presentation | raw }}</p>
@@ -215,5 +225,4 @@
     
     {# </section> #}
     
-
 {% endblock %}

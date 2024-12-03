@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Page non trouvée.</h1>
+{% block title %}Erreur {{ code }}{% endblock %}
 
-    <p>
-        {{ error }}
-    </p>
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 text-danger">Erreur {{ code }}</h1>
+            <p class="lead mt-3">{{ message }}</p>
+        </div>
+    </div>
+</div>
 {% endblock %}
