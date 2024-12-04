@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello QrCodeController!{% endblock %}
+{% block title %}Selectionnez votre questionnaire{% endblock %}
 
 {% block body %}
-{# form with a picker with all the interns of a quesionary #}
 <div class="container">
     <div class="row justify-content-md-center">
         <div class="col-md-auto">
@@ -14,7 +13,11 @@
                         <select class="form-control" id="intern" name="internId" required>
                             <option value="" disabled selected>Sélectionnez un stagiaire</option>
                             {% for intern in interns %}
-                                <option value="{{ intern.id }}" data-intern="{{ intern|json_encode }}">{{ intern.name }}</option>
+                                <option value="{{ intern.id }}" data-intern="{{ intern|json_encode }}" 
+                                        {% if intern.bRealise %}disabled{% endif %}>
+                                    {{ intern.name }}
+                                    {% if intern.bRealise %} (Déjà réalisé) {% endif %}
+                                </option>
                             {% endfor %}
                         </select>
                     {% else %}
@@ -23,7 +26,9 @@
                 </div>
                 <!-- Hidden input to store the selected intern as a JSON string -->
                 <input type="hidden" id="selectedInternData" name="selectedInternData" value="">
-                <button type="submit" class="btn btn-primary" {% if interns|length == 0 %}disabled{% endif %}>Remplir mon questionnaire</button>
+                <button type="submit" class="btn btn-primary" 
+                        id="submitButton" 
+                        {% if interns|length == 0 %}disabled{% endif %}>Remplir mon questionnaire</button>
             </form>
         </div>
     </div>
@@ -32,10 +37,20 @@
 <script>
     document.getElementById('intern').addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];
-        const internData = selectedOption.getAttribute('data-intern');
-        
+        const internData = JSON.parse(selectedOption.getAttribute('data-intern') || "{}");
+
         // Set the hidden input's value to the selected intern's JSON data
-        document.getElementById('selectedInternData').value = internData;
+        document.getElementById('selectedInternData').value = JSON.stringify(internData);
+
+        // Disable the submit button if bRealise is true
+        const submitButton = document.getElementById('submitButton');
+        if (internData.bRealise) {
+            submitButton.innerText = "Questionnaire déjà rempli";
+            submitButton.disabled = true;
+        } else {
+            submitButton.innerText = "Remplir mon questionnaire";
+            submitButton.disabled = false;
+        }
     });
 </script>
 {% endblock %}

@@ -55,7 +55,6 @@ class QrCodeController extends AbstractController
             $url
         );
 
-
         $response = $response->toArray(false);
         if (!isset($response['message'])) {
             return $this->render('exception/error.html.twig', [
@@ -69,6 +68,7 @@ class QrCodeController extends AbstractController
             $data = [
                 "id" => $questionary["idStagiaire"],
                 "name" => $questionary["stagiaire"] ? $questionary["stagiaire"]["displayedLabel"] : $questionary["client"]["displayedLabel"],
+                "bRealise" => $questionary["bRealise"],
                 "url" =>  $questionary["lien"]
             ];
             array_push($interns, $data);
