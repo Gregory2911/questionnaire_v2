@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row justify-content-md-center">
         <div class="col-md-auto">
-            <form action="{{ path('app_qr_code_questionary', {encryption: encryption}) }}" method="post">
+            <form action="{{ path('app_qr_code_questionary') }}" method="post">
                 <div class="form-group">
                     <label for="intern">Qui êtes-vous :</label>
                     {% if interns|length > 0 %}
