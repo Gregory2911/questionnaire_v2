@@ -104,9 +104,7 @@ class QuestionnaireController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/submitQuestionnaire/{id}", name="submitQuestionnaire")
-     */
+    #[Route("/submitQuestionnaire/{id}", name: "submitQuestionnaire")]
     public function submitQuestionnaire($id = null, Request $request)
     {
         $Serveur_Formdev = $_SERVER['APP_SERV'];
