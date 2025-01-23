@@ -164,6 +164,36 @@ footer
 	color: #E2574C;
 }
 
+.container-qr{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+}
+
+.form-group-qr{
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+	align-items: center;
+}
+
+.form-control-qr{
+	width: 280px;
+	padding: .5rem;
+	border-radius: 6px;
+}
+
+.btn-qr{
+	background-color: #0069b4;
+	border-radius: 6px;
+	color: white;
+	font-size: 14px;
+	font-weight: bold;
+	width: 280px;
+	margin: 0;
+}
 /* .done
 {
 	border: 1px lime solid;

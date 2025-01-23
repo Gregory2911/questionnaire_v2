@@ -3,14 +3,14 @@
 {% block title %}Selectionnez votre questionnaire{% endblock %}
 
 {% block body %}
-<div class="container">
+<div class="container container-qr">
     <div class="row justify-content-md-center">
         <div class="col-md-auto">
-            <form action="{{ path('app_qr_code_questionary') }}" method="post">
-                <div class="form-group">
-                    <label for="intern">Qui êtes-vous :</label>
+            <form action="{{ path('app_qr_code_questionary') }}" method="post" class="">
+                <div class="form-group form-group-qr">
+                    <label for="intern">Qui êtes-vous</label>
                     {% if interns|length > 0 %}
-                        <select class="form-control" id="intern" name="internId" required>
+                        <select class="form-control form-control-qr" id="intern" name="internId" required>
                             <option value="" disabled selected>Sélectionnez un stagiaire</option>
                             {% for intern in interns %}
                                 <option value="{{ intern.id }}" data-intern="{{ intern|json_encode }}" 
@@ -26,7 +26,7 @@
                 </div>
                 <!-- Hidden input to store the selected intern as a JSON string -->
                 <input type="hidden" id="selectedInternData" name="selectedInternData" value="">
-                <button type="submit" class="btn btn-primary" 
+                <button type="submit" class="btn btn-qr"
                         id="submitButton" 
                         {% if interns|length == 0 %}disabled{% endif %}>Remplir mon questionnaire</button>
             </form>
