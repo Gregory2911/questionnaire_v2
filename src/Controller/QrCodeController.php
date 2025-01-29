@@ -9,6 +9,7 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route(path: '/qr-code')]
 class QrCodeController extends AbstractController
@@ -16,11 +17,12 @@ class QrCodeController extends AbstractController
 
     private $client;
 
-    public function __construct()
+    public function __construct(HttpClientInterface $client)
     {
-        $this->client = HttpClient::create([
-            'verify_peer' => false,
-        ]);
+        $this->client = $client;
+        // $this->client = HttpClient::create([
+        //     'verify_peer' => false,
+        // ]);
     }
 
 
