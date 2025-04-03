@@ -15,7 +15,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class QrCodeController extends AbstractController
 {
 
-    private $client;
+    private HttpClientInterface $client;
 
     public function __construct(HttpClientInterface $client)
     {
@@ -41,24 +41,48 @@ class QrCodeController extends AbstractController
             // Double décodage
             $decoded = rawurldecode($encoded);
             $payload = $securityService->decodeAndDecrypt($decoded, 'AES-256-CBC');
+
+            // Vérification de l'intégrité du payload
+            if (empty($payload)) {
+                throw new Exception('Le message reçu est corrompu ou invalide.');
+            }
+
+            // Vérification de la validité du payload
+            $payload = json_decode($payload, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Erreur dans le formatage des ressources.');
+            }
+
+            if (!$payload['idCampagneQuestionnaire'] || !$payload['idDossier']) {
+                throw new Exception('Les information reçue son inexactes.');
+            }
         } catch (Exception $e) {
             return $this->render('exception/error.html.twig', [
                 'code' => '500',
                 'message' => 'Le message reçu est corrompu ou invalide : ' . $e->getMessage(),
             ]);
         }
-        //call API to get the data related to the payload
-        $data = json_decode($payload, true);
 
-        $isV2 = true;
-        $url = $_SERVER['APP_SERV_V2'] . '/api/external/questionnaires?token=' . rawurlencode($decoded);
+        // Récuperation de la liste des questionnaires
+        $url = $_SERVER['APP_SERV_V2'] . '/api/external/questionnaires?token=' . $encoded;
+//        $response = $this->client->request(
+//            'GET',
+//            $url
+//        );
+
+        //Do insecure request
         $response = $this->client->request(
             'GET',
-            $url
+            $url,
+            [
+                'verify_peer' => false,
+                'verify_host' => false,
+            ]
         );
 
         $response = $response->toArray(false);
-        if (!isset($response['message'])) {
+        if (!isset($response['message']) || !is_array($response['message'])) {
             return $this->render('exception/error.html.twig', [
                 'code' => '500',
                 'message' => 'Récupération du questionnaire impossible'
@@ -66,18 +90,52 @@ class QrCodeController extends AbstractController
         }
         $interns = [];
 
+        $typeModelSurvey = null;
         foreach ($response['message'] as $questionary) {
-            $data = [
-                "id" => $questionary["idStagiaire"],
-                "name" => $questionary["stagiaire"] ? $questionary["stagiaire"]["displayedLabel"] : $questionary["client"]["displayedLabel"],
-                "bRealise" => $questionary["bRealise"],
-                "url" =>  $questionary["lien"]
-            ];
+            $typeModelSurvey = $questionary["modeleQuestionnaire"]["typeQuestionnaire"];
+            if(!$typeModelSurvey){
+                return $this->render('exception/error.html.twig', [
+                    'code' => '500',
+                    'message' => 'Le type de questionnaire est introuvable.'
+                ]);
+            }
+            switch ($typeModelSurvey) {
+                case 1:
+                    $data = [
+                        "id" => $questionary["idStagiaire"],
+                        "name" => $questionary["stagiaire"] ? $questionary["stagiaire"]["displayedLabel"] : $questionary["client"]["displayedLabel"],
+                        "bRealise" => $questionary["bRealise"],
+                        "url" =>  $questionary["lien"]
+                    ];
+                    break;
+                case 2 | 3:
+                    $data = [
+                        "id" => $questionary["idClient"],
+                        "name" => $questionary["client"] ? $questionary["client"]["displayedLabel"] : $questionary["client"]["displayedLabel"],
+                        "bRealise" => $questionary["bRealise"],
+                        "url" =>  $questionary["lien"]
+                    ];
+                    break;
+                case 4:
+                    $data = [
+                        "id" => $questionary["intervenant"]["idIntervenant"],
+                        "name" => $questionary["intervenant"] ? $questionary["intervenant"]["prenomNom"] : $questionary["client"]["prenomNom"],
+                        "bRealise" => $questionary["bRealise"],
+                        "url" =>  $questionary["lien"]
+                    ];
+                    break;
+                default:
+                    return $this->render('exception/error.html.twig', [
+                        'code' => '500',
+                        'message' => 'Le type de questionnaire est introuvable.'
+                    ]);
+            }
             array_push($interns, $data);
         }
 
         return $this->render('qr_code/index.html.twig', [
             'encryption' => $encoded,
+            'type' => $typeModelSurvey,
             'interns' => $interns,
         ]);
     }

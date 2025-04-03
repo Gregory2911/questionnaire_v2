@@ -11,7 +11,7 @@
                     <label for="intern">Qui êtes-vous</label>
                     {% if interns|length > 0 %}
                         <select class="form-control form-control-qr" id="intern" name="internId" required>
-                            <option value="" disabled selected>Sélectionnez un stagiaire</option>
+                            <option value="" disabled selected>Sélectionnez {% if type == 1 %}un stagiaire{% elseif type == 2 or type == 3 %}une personne{% elseif type == 4 %}un intervenant{% endif %}</option>
                             {% for intern in interns %}
                                 <option value="{{ intern.id }}" data-intern="{{ intern|json_encode }}" 
                                         {% if intern.bRealise %}disabled{% endif %}>
