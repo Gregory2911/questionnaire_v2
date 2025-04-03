@@ -66,19 +66,9 @@ class QrCodeController extends AbstractController
 
         // Récuperation de la liste des questionnaires
         $url = $_SERVER['APP_SERV_V2'] . '/api/external/questionnaires?token=' . $encoded;
-//        $response = $this->client->request(
-//            'GET',
-//            $url
-//        );
-
-        //Do insecure request
         $response = $this->client->request(
             'GET',
-            $url,
-            [
-                'verify_peer' => false,
-                'verify_host' => false,
-            ]
+            $url
         );
 
         $response = $response->toArray(false);
