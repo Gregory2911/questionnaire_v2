@@ -102,7 +102,7 @@ class QrCodeController extends AbstractController
                 case 3:
                     $data = [
                         "id" => $questionary["idClient"],
-                        "name" => $questionary["client"] ? $questionary["client"]["displayedLabel"] : $questionary["client"]["displayedLabel"],
+                        "name" => $questionary["client"] ? $questionary["client"]["designation"] : $questionary["client"]["designation"],
                         "bRealise" => $questionary["bRealise"],
                         "url" =>  $questionary["lien"]
                     ];
