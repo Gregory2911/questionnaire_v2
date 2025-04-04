@@ -65,7 +65,7 @@ class QrCodeController extends AbstractController
         }
 
         // Récuperation de la liste des questionnaires
-        $url = $_SERVER['APP_SERV_V2'] . '/api/external/questionnaires?token=' . $encoded;
+        $url = $_SERVER['APP_SERV_V2'] . '/api/external/questionnaires?token=' . rawurlencode($decoded);
         $response = $this->client->request(
             'GET',
             $url
@@ -98,7 +98,8 @@ class QrCodeController extends AbstractController
                         "url" =>  $questionary["lien"]
                     ];
                     break;
-                case 2 | 3:
+                case 2:
+                case 3:
                     $data = [
                         "id" => $questionary["idClient"],
                         "name" => $questionary["client"] ? $questionary["client"]["displayedLabel"] : $questionary["client"]["displayedLabel"],
