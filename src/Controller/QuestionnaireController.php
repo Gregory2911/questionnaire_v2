@@ -18,7 +18,9 @@ use App\Entity\ReponseLongue;
 class QuestionnaireController extends AbstractController
 {
 
-    #[Route("/{id}", name: "questionnaire")]
+    /**
+     * @Route("/{id}", name="questionnaire")
+     */
     public function index($id = null, Request $request)
     {
         if (isset($id)) {
@@ -104,7 +106,9 @@ class QuestionnaireController extends AbstractController
         }
     }
 
-    #[Route("/submitQuestionnaire/{id}", name: "submitQuestionnaire")]
+    /**
+     * @Route("/submitQuestionnaire/{id}", name="submitQuestionnaire")
+     */
     public function submitQuestionnaire($id = null, Request $request)
     {
         $Serveur_Formdev = $_SERVER['APP_SERV'];
@@ -190,7 +194,9 @@ class QuestionnaireController extends AbstractController
         }
     }
 
-    #[Route("/submitQuestionnaireV2/{id}", name: "submitQuestionnaireV2")]
+    /**
+     * @Route("/submitQuestionnaireV2/{id}", name="submitQuestionnaireV2")
+     */
     public function submitQuestionnaireV2($id = null, Request $request)
     {
         $Serveur_Formdev = $_SERVER['APP_SERV_V2'];

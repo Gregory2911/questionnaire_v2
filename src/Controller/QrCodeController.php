@@ -11,7 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-#[Route(path: '/qr-code')]
+
+/**
+ * @Route("/qr-code")
+ */
 class QrCodeController extends AbstractController
 {
 
@@ -26,7 +29,9 @@ class QrCodeController extends AbstractController
     }
 
 
-    #[Route('', methods: ['GET'])]
+    /**
+     * @Route("")
+     */
     public function index(Request $request, SecurityService $securityService): Response
     {
         $encoded = $request->query->get('token');
@@ -131,7 +136,9 @@ class QrCodeController extends AbstractController
         ]);
     }
 
-    #[Route('/redirect', name: 'app_qr_code_questionary', methods: ['POST'])]
+    /**
+     * @Route("/redirect", name="app_qr_code_questionary")
+     */
     public function redirectToQuestionary(Request $request): Response
     {
         $selectedInternDataJson = $request->request->get('selectedInternData');
