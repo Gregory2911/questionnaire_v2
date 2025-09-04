@@ -37,8 +37,8 @@ class QuestionnaireController extends AbstractController
                 // $url = $Serveur_Formdev . '/api/erp/questionnaire/get-by-url/' . $id;
                 // $isV2 = true;
                 $Serveur_Formdev = $_SERVER['APP_SERV_V2'];
-                // $url = $Serveur_Formdev . '/api/external/questionnaires/get-new-url/' . $id;
-                $url = 'http://127.0.0.1:8000/api/external/questionnaires/get-new-url/' . $id;
+                $url = $Serveur_Formdev . '/api/external/questionnaires/get-new-url/' . $id;
+                // $url = 'http://127.0.0.1:8000/api/external/questionnaires/get-new-url/' . $id;
                 // $json = @file_get_contents($url);
                 $response = $this->httpClient->request('GET', $url);
                 $response = $response->toArray(1);                               
